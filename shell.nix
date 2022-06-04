@@ -1,8 +1,38 @@
 { forCI ? false }:
+with import <nixpkgs> { };
 let
-  pkgs = import <nixpkgs> { };
+  projectUris = {
+    gotk4 = "git@github.com:diamondburned/gotk4.git";
+    gtk4-adwaita = "git@github.com:diamondburned/gotk4-adwaita.git";
+    gtk = "https://gitlab.gnome.org/GNOME/libadwaita.git";
+    libadwaita = "https://gitlab.gnome.org/GNOME/libadwaita.git";
+  };
+
+  cloneCmd = rootDir: key: uri: ''
+    if [[ -d ${rootDir}/${key} ]]; then
+      echo "${rootDir}/${key} already exists. Will not create."
+    else
+      mkdir -p ${rootDir}
+      ${git}/bin/git clone --recurse-submodules -j8 ${uri} ${rootDir}/${key}
+    fi
+  '';
+  recurseProjectUris = rootDir: lib.mapAttrsToList (
+    name: value:
+      if builtins.isAttrs value
+      then recurseProjectUris "${rootDir}/${name}" value
+      else cloneCmd rootDir name value
+  );
+
+  PROJECT_ROOT = builtins.getEnv "PWD";
+
+  initGitPkg = writeShellScriptBin "initgit" ''
+    echo
+    echo Cloning necessary repos
+    echo
+    ${lib.concatStringsSep "\n" (lib.flatten (recurseProjectUris PROJECT_ROOT projectUris))}
+    echo
+  '';
 in
-with pkgs;
 mkShell {
   buildInputs = [
     # Core GTK
@@ -26,8 +56,10 @@ mkShell {
     pkgconfig
     vulkan-headers
   ] ++ lib.lists.optional (!forCI) [
-    gotools
+    gi-docgen
     gopls
+    gotools
+    initGitPkg
     vgo2nix
     yq-go
   ];
