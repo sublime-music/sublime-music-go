@@ -16,10 +16,30 @@ func main() {
 	}
 }
 
+type SublimeMusic struct {
+	*gtk.Application
+
+	window *gtk.ApplicationWindow
+}
+
 func activate(app *gtk.Application) {
 	window := gtk.NewApplicationWindow(app)
 	window.SetTitle("Sublime Music")
-	window.SetChild(gtk.NewLabel("Hello from Go!"))
+	window.SetTitlebar(createHeaderBar())
+
+	window.SetChild(gtk.NewLabel("ohea"))
+	audio := gtk.NewMediaFileForFilename("/home/sumner/tmp/ohea.mp3")
+	audio.Play()
+
 	window.SetDefaultSize(1342, 756)
 	window.Show()
+
+}
+
+func createHeaderBar() *gtk.HeaderBar {
+	headerBar := gtk.NewHeaderBar()
+	headerBar.PackStart(gtk.NewLabel("Search here"))
+	headerBar.SetTitleWidget(gtk.NewLabel("Tabs here"))
+	headerBar.PackEnd(gtk.NewLabel("Settings and such here"))
+	return headerBar
 }
