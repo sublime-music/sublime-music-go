@@ -3,13 +3,16 @@ package main
 import (
 	"os"
 
+	"github.com/diamondburned/gotk4-adwaita/pkg/adw"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 )
 
 func main() {
-	app := gtk.NewApplication("app.sublimemusic.SublimeMusic", gio.ApplicationFlagsNone)
-	app.ConnectActivate(func() { activate(app) })
+	app := SublimeMusic{
+		Application: adw.NewApplication("app.sublimemusic.SublimeMusic", gio.ApplicationFlagsNone),
+	}
+	app.ConnectActivate(func() { app.activate() })
 
 	if code := app.Run(os.Args); code > 0 {
 		os.Exit(code)
@@ -17,27 +20,25 @@ func main() {
 }
 
 type SublimeMusic struct {
-	*gtk.Application
+	*adw.Application
 
-	window *gtk.ApplicationWindow
+	window *adw.ApplicationWindow
 }
 
-func activate(app *gtk.Application) {
-	window := gtk.NewApplicationWindow(app)
-	window.SetTitle("Sublime Music")
-	window.SetTitlebar(createHeaderBar())
+func (s *SublimeMusic) activate() {
+	s.window = adw.NewApplicationWindow(&s.Application.Application)
+	s.window.SetTitle("Sublime Music")
 
-	window.SetChild(gtk.NewLabel("ohea"))
+	s.window.SetContent(gtk.NewLabel("ohea"))
 	audio := gtk.NewMediaFileForFilename("/home/sumner/tmp/ohea.mp3")
 	audio.Play()
 
-	window.SetDefaultSize(1342, 756)
-	window.Show()
-
+	s.window.SetDefaultSize(1342, 756)
+	s.window.Show()
 }
 
-func createHeaderBar() *gtk.HeaderBar {
-	headerBar := gtk.NewHeaderBar()
+func createHeaderBar() *adw.HeaderBar {
+	headerBar := adw.NewHeaderBar()
 	headerBar.PackStart(gtk.NewLabel("Search here"))
 	headerBar.SetTitleWidget(gtk.NewLabel("Tabs here"))
 	headerBar.PackEnd(gtk.NewLabel("Settings and such here"))
