@@ -1,4 +1,5 @@
 ICON_FILES=$(wildcard ./resources/icons/scalable/actions/*.svg)
+UI_FILES=$(wildcard ./resources/ui/*.ui)
 RESOURCE_FILES=resources/icons.gresource resources/ui.gresource
 
 all: sublime-music-next
@@ -18,8 +19,7 @@ resources/%: resources/%.xml
 resources/icons.gresource.xml: $(ICON_FILES)
 	bash ./scripts/mkresource.sh $@ $^
 
-resources/ui.gresource.xml: resources/ui/sublime-music.cmb
-	cambalache --export-all $<
-	bash ./scripts/mkresource.sh $@ resources/ui/*.ui
+resources/ui.gresource.xml: $(UI_FILES)
+	bash ./scripts/mkresource.sh $@ $^
 
 .PHONY: all clean

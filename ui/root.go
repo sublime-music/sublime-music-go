@@ -3,8 +3,6 @@ package ui
 import (
 	"github.com/diamondburned/gotk4-adwaita/pkg/adw"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
-
-	log "github.com/sirupsen/logrus"
 )
 
 type RootWindow struct {
@@ -21,16 +19,14 @@ func CreateRootWindow(app *gtk.Application) *RootWindow {
 
 	window.SetTitle("Sublime Music Next")
 
-	{
-		rootBox := gtk.NewBox(gtk.OrientationVertical, 0)
-		rootBox.SetVExpand(true)
+	builder := gtk.NewBuilderFromResource("/app/sublimemusic/SublimeMusicNext/ui/root.ui")
+	rootBox := builder.GetObject("root-box").Cast().(*gtk.Box)
+	window.SetContent(rootBox)
 
-		rootBox.Append(window.createHeaderBar())
-		rootBox.Append(window.MainStack)
-		rootBox.Append(CreatePlayerControls())
-
-		window.SetContent(rootBox)
-	}
+	// 	rootBox.Append(window.createHeaderBar())
+	// 	rootBox.Append(window.MainStack)
+	// 	rootBox.Append(CreatePlayerControls())
+	// 	rootBox.Append(window.createFooterSwitcher())
 
 	window.SetDefaultSize(1342, 756)
 	return &window
@@ -52,28 +48,4 @@ func createMainStack() (vs *adw.ViewStack) {
 	playlistsPage := vs.AddTitled(gtk.NewLabel("Playlists"), "playlists", "Playlists")
 	playlistsPage.SetIconName("playlist-symbolic")
 	return
-}
-
-func (w *RootWindow) createHeaderBar() *adw.HeaderBar {
-	headerBar := adw.NewHeaderBar()
-
-	// Search Button
-	{
-		menuButton := gtk.NewMenuButton()
-		menuButton.SetIconName("loupe-symbolic")
-		menuButton.Connect("activate", func(menuBtn *gtk.MenuButton) {
-			log.Info("Activated")
-		})
-		headerBar.PackStart(menuButton)
-	}
-
-	// Stack Switcher
-	{
-		stackSwitcher := adw.NewViewSwitcherTitle()
-		stackSwitcher.SetStack(w.MainStack)
-		headerBar.SetTitleWidget(stackSwitcher)
-	}
-
-	headerBar.PackEnd(gtk.NewLabel("Settings and such here"))
-	return headerBar
 }
