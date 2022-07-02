@@ -1,14 +1,12 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!-- Created with Cambalache 0.10.2 -->
 <interface>
-  <!-- interface-name root.ui -->
   <requires lib="gtk" version="4.6" />
   <requires lib="libadwaita" version="1.1" />
-  <object class="GtkBox" id="root-box">
+  <object class="GtkBox" id="root">
     <property name="orientation">vertical</property>
-    <property name="vexpand">true</property>
     <child>
       <object class="AdwHeaderBar">
+        <property name="centering-policy">strict</property>
         <child type="start">
           <object class="GtkMenuButton" id="SearchButton">
             <property name="icon-name">edit-find-symbolic</property>
@@ -16,13 +14,13 @@
         </child>
         <child type="title">
           <object class="AdwViewSwitcherTitle" id="switcher-title">
-            <property name="stack">root-stack</property>
+            <property name="stack">main-stack</property>
           </object>
         </child>
       </object>
     </child>
     <child>
-      <object class="AdwViewStack" id="root-stack">
+      <object class="AdwViewStack" id="main-stack">
         <property name="vexpand">true</property>
         <child>
           <object class="AdwViewStackPage">
@@ -30,11 +28,7 @@
             <property name="name">albums</property>
             <property name="title">Albums</property>
             <property name="child">
-              <object class="AdwStatusPage">
-                <property name="description">All of your albums</property>
-                <property name="icon-name">library-music-symbolic</property>
-                <property name="title">Albums</property>
-              </object>
+              <object class="GtkBox" id="albums" />
             </property>
           </object>
         </child>
@@ -44,11 +38,7 @@
             <property name="name">artists</property>
             <property name="title">Artists</property>
             <property name="child">
-              <object class="AdwStatusPage">
-                <property name="description">All of your artists</property>
-                <property name="icon-name">library-artists-symbolic</property>
-                <property name="title">Artists</property>
-              </object>
+              <object class="GtkBox" id="artists" />
             </property>
           </object>
         </child>
@@ -58,11 +48,7 @@
             <property name="name">browse</property>
             <property name="title">Browse</property>
             <property name="child">
-              <object class="AdwStatusPage">
-                <property name="description">Browse songs</property>
-                <property name="icon-name">columns-symbolic</property>
-                <property name="title">Browse</property>
-              </object>
+              <object class="GtkBox" id="browse" />
             </property>
           </object>
         </child>
@@ -72,11 +58,7 @@
             <property name="name">playlists</property>
             <property name="title">Playlists</property>
             <property name="child">
-              <object class="AdwStatusPage">
-                <property name="description">All of your playlists</property>
-                <property name="icon-name">playlist-symbolic</property>
-                <property name="title">Playlists</property>
-              </object>
+              <object class="GtkBox" id="playlists" />
             </property>
           </object>
         </child>
@@ -84,7 +66,7 @@
     </child>
     <child>
       <object class="AdwViewSwitcherBar">
-        <property name="stack">root-stack</property>
+        <property name="stack">main-stack</property>
         <binding name="reveal">
           <lookup name="title-visible">switcher-title</lookup>
         </binding>

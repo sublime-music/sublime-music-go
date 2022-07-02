@@ -7,13 +7,10 @@ type PlayerControls struct {
 }
 
 func CreatePlayerControls() *PlayerControls {
-	pc := PlayerControls{
-		ActionBar: gtk.NewActionBar(),
+	builder := gtk.NewBuilderFromResource("/app/sublimemusic/SublimeMusicNext/ui/playercontrols.ui")
+	pc := &PlayerControls{
+		ActionBar: builder.GetObject("root").Cast().(*gtk.ActionBar),
 	}
 
-	pc.PackStart(gtk.NewLabel("Song info"))
-	pc.PackEnd(gtk.NewLabel("Queue/volume info"))
-	pc.SetCenterWidget(gtk.NewLabel("play button"))
-
-	return &pc
+	return pc
 }

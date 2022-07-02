@@ -8,44 +8,35 @@ import (
 type RootWindow struct {
 	*adw.ApplicationWindow
 
-	MainStack *adw.ViewStack
+	MainStack      *adw.ViewStack
+	PlayerControls *PlayerControls
 }
 
 func CreateRootWindow(app *gtk.Application) *RootWindow {
 	window := RootWindow{
 		ApplicationWindow: adw.NewApplicationWindow(app),
-		MainStack:         createMainStack(),
 	}
 
 	window.SetTitle("Sublime Music Next")
+	window.SetDefaultSize(1342, 756)
 
 	builder := gtk.NewBuilderFromResource("/app/sublimemusic/SublimeMusicNext/ui/root.ui")
-	rootBox := builder.GetObject("root-box").Cast().(*gtk.Box)
+	rootBox := builder.GetObject("root").Cast().(*gtk.Box)
 	window.SetContent(rootBox)
 
-	// 	rootBox.Append(window.createHeaderBar())
-	// 	rootBox.Append(window.MainStack)
-	// 	rootBox.Append(CreatePlayerControls())
-	// 	rootBox.Append(window.createFooterSwitcher())
+	window.MainStack = builder.GetObject("main-stack").Cast().(*adw.ViewStack)
 
-	window.SetDefaultSize(1342, 756)
+	// Add in each of the tabs.
+	builder.GetObject("albums").Cast().(*gtk.Box).Append(CreateAlbumsTab())
+	builder.GetObject("artists").Cast().(*gtk.Box).Append(CreateArtistsTab())
+	builder.GetObject("browse").Cast().(*gtk.Box).Append(CreateBrowseTab())
+	builder.GetObject("playlists").Cast().(*gtk.Box).Append(CreatePlaylistsTab())
+
+	window.MainStack.SetVisibleChildName("playlists")
+
+	// Add in the player controls.
+	window.PlayerControls = CreatePlayerControls()
+	rootBox.InsertChildAfter(window.PlayerControls, window.MainStack)
+
 	return &window
-}
-
-func createMainStack() (vs *adw.ViewStack) {
-	vs = adw.NewViewStack()
-	vs.SetVExpand(true)
-
-	albumsPage := vs.AddTitled(gtk.NewLabel("Albums"), "albums", "Albums")
-	albumsPage.SetIconName("library-music-symbolic")
-
-	artistsPage := vs.AddTitled(gtk.NewLabel("Artists"), "artists", "Artists")
-	artistsPage.SetIconName("library-artists-symbolic")
-
-	browsePage := vs.AddTitled(gtk.NewLabel("Browse"), "browse", "Browse")
-	browsePage.SetIconName("columns-symbolic")
-
-	playlistsPage := vs.AddTitled(gtk.NewLabel("Playlists"), "playlists", "Playlists")
-	playlistsPage.SetIconName("playlist-symbolic")
-	return
 }

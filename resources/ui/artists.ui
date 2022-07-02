@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<interface>
+  <requires lib="gtk" version="4.6" />
+  <requires lib="libadwaita" version="1.1" />
+  <object class="AdwLeaflet" id="root">
+    <child>
+      <object class="GtkLabel">
+        <property name="label">This is a long label to the leaflet works</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkLabel">
+        <property name="label">This also is a long ass that the leaflet works</property>
+      </object>
+    </child>
+  </object>
+</interface>

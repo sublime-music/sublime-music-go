@@ -7,7 +7,6 @@ import (
 
 	"github.com/diamondburned/gotk4-adwaita/pkg/adw"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 	log "github.com/sirupsen/logrus"
 
 	"github.com/sumnerevans/sublime-music-next/resources"
@@ -60,8 +59,8 @@ type SublimeMusic struct {
 func (s *SublimeMusic) activate() {
 	s.window = ui.CreateRootWindow(&s.Application.Application)
 
-	audio := gtk.NewMediaFileForFilename("/home/sumner/tmp/ohea.mp3")
-	audio.Play()
+	// audio := gtk.NewMediaFileForFilename("/home/sumner/tmp/ohea.mp3")
+	// audio.Play()
 
 	s.window.Show()
 }
