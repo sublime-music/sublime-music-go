@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gresources>
-  <gresource prefix="/app/sublimemusic/SublimeMusicNext">
-    <file preprocess="xml-stripblanks">icons/scalable/actions/columns-symbolic.svg</file>
-    <file preprocess="xml-stripblanks">icons/scalable/actions/library-artists-symbolic.svg</file>
-    <file preprocess="xml-stripblanks">icons/scalable/actions/library-music-symbolic.svg</file>
-    <file preprocess="xml-stripblanks">icons/scalable/actions/playlist-symbolic.svg</file>
-  </gresource>
-</gresources>

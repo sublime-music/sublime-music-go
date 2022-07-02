@@ -1,5 +1,6 @@
 # Resources
 resources/*.gresource
+resources/*.gresource.xml
 
 # Clones of repos that I depend on for offline docs
 gotk4/
