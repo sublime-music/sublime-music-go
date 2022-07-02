@@ -44,6 +44,7 @@ mkShell {
     gtk3
     gtk4
     libadwaita
+    libxml2
 
     # Gstreamer for audio
     gst_all_1.gstreamer

@@ -19,7 +19,7 @@ func CreateRootWindow(app *gtk.Application) *RootWindow {
 		MainStack:         createMainStack(),
 	}
 
-	window.SetTitle("Sublime Music")
+	window.SetTitle("Sublime Music Next")
 
 	{
 		rootBox := gtk.NewBox(gtk.OrientationVertical, 0)

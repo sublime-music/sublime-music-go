@@ -1,8 +1,13 @@
+# Resources
+resources/*.gresource
+
 # Clones of repos that I depend on for offline docs
 gotk4/
 gtk/
 gtk4-adwaita/
 libadwaita/
+
+sublime-music-next
 
 # Created by https://www.toptal.com/developers/gitignore/api/go
 # Edit at https://www.toptal.com/developers/gitignore?templates=go
