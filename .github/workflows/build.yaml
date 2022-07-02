@@ -11,17 +11,13 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        go-version: [1.18]
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up Go ${{ matrix.go-version }}
+      - name: Set up Go 1.18
         uses: actions/setup-go@v2
         with:
-          go-version: ${{ matrix.go-version }}
+          go-version: 1.18
 
       - name: Install goimports
         run: |
@@ -50,14 +46,14 @@ jobs:
       - name: Install dependencies
         run: |
           nix-shell \
-            --args forCI true \
-            --command "Dependencies installed"
+            --arg forCI true \
+            --run "echo Dependencies installed"
 
-      - name: go build
+      - name: make
         run: |
           nix-shell \
-            --args forCI true \
-            --command "go build -v ."
+            --arg forCI true \
+            --run "make"
 
       - uses: actions/upload-artifact@v3
         with:
