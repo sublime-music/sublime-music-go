@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/gnome/design/IconLibrary/icons/scalable/actions/">
+    <file preprocess="xml-stripblanks">columns-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">library-artists-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">library-music-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">playlist-symbolic.svg</file>
+  </gresource>
+</gresources>
