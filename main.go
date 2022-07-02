@@ -15,9 +15,8 @@ func main() {
 	}
 	app.ConnectActivate(func() { app.activate() })
 
-	if code := app.Run(os.Args); code > 0 {
-		os.Exit(code)
-	}
+	// Exit with whatever code the app exits with
+	os.Exit(app.Run(os.Args))
 }
 
 type SublimeMusic struct {
