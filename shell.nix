@@ -54,6 +54,8 @@ mkShell {
     gst_all_1.gst-plugins-ugly
     gst_all_1.gst-libav
 
+    # Build utilities
+    gnumake
     pkgconfig
     vulkan-headers
   ] ++ lib.lists.optional (!forCI) [
