@@ -66,4 +66,12 @@ mkShell {
     vgo2nix
     yq-go
   ];
+
+  # Workaround for the lack of wrapGAppsHook:
+  # https://nixos.wiki/wiki/Development_environment_with_nix-shell
+  shellHook = with pkgs.gnome; with pkgs; ''
+    export GDK_PIXBUF_MODULE_FILE='${librsvg}/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache'
+    export XDG_DATA_DIRS=$XDG_DATA_DIRS:${hicolor-icon-theme}/share:${adwaita-icon-theme}/share
+    export XDG_DATA_DIRS=$XDG_DATA_DIRS:$GSETTINGS_SCHEMAS_PATH
+  '';
 }
