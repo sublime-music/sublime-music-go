@@ -1,6 +1,9 @@
 package adapters
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 type Song struct {
 }
@@ -17,4 +20,8 @@ type Playlist struct {
 	Owner     *string
 	Public    *bool
 	CoverArt  *string
+}
+
+func (p *Playlist) String() string {
+	return fmt.Sprintf("Playlist(%s, %s, %d)", p.ID, p.Name, p.SongCount)
 }

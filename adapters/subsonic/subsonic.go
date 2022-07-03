@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"math/big"
 	"net/http"
+	"net/url"
 	"time"
 
 	log "github.com/sirupsen/logrus"
@@ -68,41 +69,49 @@ func (a *SubsonicAdapter) randomString(length int) string {
 	return string(s)
 }
 
-func (a *SubsonicAdapter) get(url string, timeout time.Duration, data map[string]string) (*http.Response, error) {
-	log.Debugf("GET %s %v", url, data)
+func (a *SubsonicAdapter) getParams() map[string]string {
+	params := map[string]string{
+		"u": a.Username,
+		"c": "Sublime Music",
+		"f": "json",
+		"v": a.version,
+	}
+
+	if a.UseSaltAuth {
+		// Generates the necessary authentication queryParams to call the Subsonic API
+		// See the Authentication section of www.subsonic.org/pages/api.jsp for
+		// more information
+		salt := a.randomString(20)
+		h := md5.New()
+		h.Write([]byte(a.Password + salt))
+		params["s"] = salt
+		params["t"] = hex.EncodeToString(h.Sum(nil))
+	} else {
+		params["p"] = a.Password
+	}
+	return params
+}
+
+func (a *SubsonicAdapter) get(url string, timeout time.Duration, queryParams url.Values) (*http.Response, error) {
+	log.Debugf("GET %s %v", url, queryParams)
 	// TODO actually use the timeout
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	q := req.URL.Query()
-	q.Add("u", a.Username)
-	q.Add("c", "Sublime Music")
-	q.Add("f", "json")
-	q.Add("v", a.version)
-	if a.UseSaltAuth {
-		// Generates the necessary authentication data to call the Subsonic API
-		// See the Authentication section of www.subsonic.org/pages/api.jsp for
-		// more information
-		salt := a.randomString(20)
-		h := md5.New()
-		h.Write([]byte(a.Password + salt))
-		q.Add("s", salt)
-		q.Add("t", hex.EncodeToString(h.Sum(nil)))
-	} else {
-		q.Add("p", a.Password)
+	if queryParams == nil {
+		queryParams = map[string][]string{}
 	}
-
-	for k, v := range data {
-		q.Add(k, v)
+	for k, v := range a.getParams() {
+		queryParams.Add(k, v)
 	}
-	req.URL.RawQuery = q.Encode()
+	req.URL.RawQuery = queryParams.Encode()
 	return a.client.Do(req)
 }
 
-func (a *SubsonicAdapter) getJson(url string, timeout time.Duration, data map[string]string) (*SubsonicResponse, error) {
-	resp, err := a.get(url, timeout, data)
+func (a *SubsonicAdapter) getJson(url string, timeout time.Duration, queryParams url.Values) (*SubsonicResponse, error) {
+	resp, err := a.get(url, timeout, queryParams)
 	if err != nil {
 		return nil, err
 	}
@@ -117,6 +126,8 @@ func (a *SubsonicAdapter) getJson(url string, timeout time.Duration, data map[st
 		return nil, response.SubsonicResponse.Error
 	}
 
+	// Use the version that was sent back in the response for all future
+	// requests.
 	a.version = response.SubsonicResponse.Version
 	return response.SubsonicResponse, nil
 }
@@ -124,20 +135,27 @@ func (a *SubsonicAdapter) getJson(url string, timeout time.Duration, data map[st
 // Playlists
 func (a *SubsonicAdapter) GetPlaylists() ([]*adapters.Playlist, error) {
 	if resp, err := a.getJson(a.makeUrl("getPlaylists"), time.Duration(0), nil); err != nil {
-		log.Error(err)
+		log.Errorf("Failed to get playlists: %v", err)
+		return nil, err
 	} else {
-		log.Info(resp)
+		var playlists []*adapters.Playlist
+		for _, playlist := range resp.Playlists.Playlist {
+			playlists = append(playlists, ConvertPlaylist(playlist))
+		}
+		return playlists, nil
 	}
-
-	return nil, nil
 }
+
 func (a *SubsonicAdapter) GetPlaylistDetails(playlistID string) (*adapters.Playlist, error) {
 	return nil, nil
 }
+
 func (a *SubsonicAdapter) CreatePlaylist(name string, song_ids []string) (*adapters.Playlist, error) {
 	return nil, nil
 }
+
 func (a *SubsonicAdapter) UpdatePlaylist(playlistID string, name *string, comment *string, public *bool, songIDs []string) (*adapters.Playlist, error) {
 	return nil, nil
 }
+
 func (a *SubsonicAdapter) DeletePlaylist(playlistID string) error { return nil }
