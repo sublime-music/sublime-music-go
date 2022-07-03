@@ -4,12 +4,17 @@ import (
 	"github.com/sumnerevans/sublime-music-next/adapters"
 )
 
-func ConvertSong(in *Song) (out *adapters.Song) {
+func convertSong(in *Song) (out *adapters.Song) {
 	out = &adapters.Song{}
 	return
 }
 
-func ConvertPlaylist(in *Playlist) (out *adapters.Playlist) {
+func convertPlaylist(in *Playlist) (out *adapters.Playlist) {
+	if in == nil {
+		out = nil
+		return
+	}
+
 	out = &adapters.Playlist{}
 	out.ID = in.ID.String()
 	out.Name = in.Name
@@ -17,7 +22,7 @@ func ConvertPlaylist(in *Playlist) (out *adapters.Playlist) {
 	out.Duration = in.Duration.Duration()
 	out.Songs = make([]*adapters.Song, len(in.Songs))
 	for i, song := range in.Songs {
-		out.Songs[i] = ConvertSong(song)
+		out.Songs[i] = convertSong(song)
 	}
 	out.Created = in.Created
 	out.Changed = in.Changed

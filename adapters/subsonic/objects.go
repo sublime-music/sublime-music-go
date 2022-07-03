@@ -93,6 +93,7 @@ type SubsonicResponse struct {
 	Error   *SubsonicError `json:"error"`
 	Version string         `json:"version"`
 
+	Playlist  *Playlist  `json:"playlist"`
 	Playlists *Playlists `json:"playlists"`
 }
 

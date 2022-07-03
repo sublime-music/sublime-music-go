@@ -1,3 +1,5 @@
+// Package subsonic defines the Subsonic adapter which implements the Adapter
+// API for Subsonic-like backends.
 package subsonic
 
 import (
@@ -9,6 +11,7 @@ import (
 	"math/big"
 	"net/http"
 	"net/url"
+	"strconv"
 	"time"
 
 	log "github.com/sirupsen/logrus"
@@ -24,10 +27,12 @@ type SubsonicAdapter struct {
 
 	client  *http.Client
 	version string
+
+	capabilities *adapters.Capabilities
 }
 
-func New(hostname, username, password string, verifyCert, useSaltAuth bool) *SubsonicAdapter {
-	return &SubsonicAdapter{
+func New(hostname, username, password string, verifyCert, useSaltAuth bool) (adapter *SubsonicAdapter) {
+	adapter = &SubsonicAdapter{
 		Hostname:    hostname,
 		Username:    username,
 		Password:    password,
@@ -36,7 +41,16 @@ func New(hostname, username, password string, verifyCert, useSaltAuth bool) *Sub
 
 		client:  &http.Client{},
 		version: "1.8.0",
+
+		capabilities: &adapters.Capabilities{
+			CanGetPlaylists:       true,
+			CanGetPlaylistDetails: true,
+			CanCreatePlaylist:     true,
+			CanUpdatePlaylist:     true,
+			CanDeletePlaylist:     true,
+		},
 	}
+	return
 }
 
 // NETWORK PROPERTIES
@@ -44,12 +58,8 @@ func (a *SubsonicAdapter) IsNetworked() bool { return true }
 func (a *SubsonicAdapter) OnOfflineModeChange(offlineMode bool) {
 }
 
-// AVAILABILITY PROPERTIES
-func (a *SubsonicAdapter) CanGetPlaylists() bool       { return true }
-func (a *SubsonicAdapter) CanGetPlaylistDetails() bool { return true }
-func (a *SubsonicAdapter) CanCreatePlaylist() bool     { return true }
-func (a *SubsonicAdapter) CanUpdatePlaylist() bool     { return true }
-func (a *SubsonicAdapter) CanDeletePlaylist() bool     { return true }
+// CAPABILITIES
+func (a *SubsonicAdapter) GetCapabilities() *adapters.Capabilities { return a.capabilities }
 
 // DATA RETRIEVAL METHODS
 // Helper methods
@@ -78,9 +88,9 @@ func (a *SubsonicAdapter) getParams() map[string]string {
 	}
 
 	if a.UseSaltAuth {
-		// Generates the necessary authentication queryParams to call the Subsonic API
-		// See the Authentication section of www.subsonic.org/pages/api.jsp for
-		// more information
+		// Generates the necessary authentication queryParams to call the
+		// Subsonic API. See the Authentication section of
+		// www.subsonic.org/pages/api.jsp for more information
 		salt := a.randomString(20)
 		h := md5.New()
 		h.Write([]byte(a.Password + salt))
@@ -92,7 +102,7 @@ func (a *SubsonicAdapter) getParams() map[string]string {
 	return params
 }
 
-func (a *SubsonicAdapter) get(url string, timeout time.Duration, queryParams url.Values) (*http.Response, error) {
+func (a *SubsonicAdapter) get(url string, timeout *time.Duration, queryParams url.Values) (*http.Response, error) {
 	log.Debugf("GET %s %v", url, queryParams)
 	// TODO actually use the timeout
 	req, err := http.NewRequest(http.MethodGet, url, nil)
@@ -110,7 +120,7 @@ func (a *SubsonicAdapter) get(url string, timeout time.Duration, queryParams url
 	return a.client.Do(req)
 }
 
-func (a *SubsonicAdapter) getJson(url string, timeout time.Duration, queryParams url.Values) (*SubsonicResponse, error) {
+func (a *SubsonicAdapter) getJson(url string, timeout *time.Duration, queryParams url.Values) (*SubsonicResponse, error) {
 	resp, err := a.get(url, timeout, queryParams)
 	if err != nil {
 		return nil, err
@@ -133,29 +143,86 @@ func (a *SubsonicAdapter) getJson(url string, timeout time.Duration, queryParams
 }
 
 // Playlists
+
 func (a *SubsonicAdapter) GetPlaylists() ([]*adapters.Playlist, error) {
-	if resp, err := a.getJson(a.makeUrl("getPlaylists"), time.Duration(0), nil); err != nil {
+	resp, err := a.getJson(a.makeUrl("getPlaylists"), nil, nil)
+	if err != nil {
 		log.Errorf("Failed to get playlists: %v", err)
 		return nil, err
-	} else {
-		var playlists []*adapters.Playlist
-		for _, playlist := range resp.Playlists.Playlist {
-			playlists = append(playlists, ConvertPlaylist(playlist))
-		}
-		return playlists, nil
 	}
+
+	var playlists []*adapters.Playlist
+	for _, playlist := range resp.Playlists.Playlist {
+		playlists = append(playlists, convertPlaylist(playlist))
+	}
+	return playlists, nil
 }
 
 func (a *SubsonicAdapter) GetPlaylistDetails(playlistID string) (*adapters.Playlist, error) {
-	return nil, nil
+	resp, err := a.getJson(a.makeUrl("getPlaylist"), nil, map[string][]string{
+		"id": {playlistID},
+	})
+	if err != nil {
+		log.Errorf("Failed to get playlist: %v", err)
+		return nil, err
+	}
+
+	return convertPlaylist(resp.Playlist), nil
 }
 
-func (a *SubsonicAdapter) CreatePlaylist(name string, song_ids []string) (*adapters.Playlist, error) {
-	return nil, nil
+func (a *SubsonicAdapter) CreatePlaylist(name string, songIDs []string) (*adapters.Playlist, error) {
+	resp, err := a.getJson(a.makeUrl("createPlaylist"), nil, map[string][]string{
+		"name":   {name},
+		"sondId": songIDs,
+	})
+	if err != nil {
+		log.Error("Failed to create playlist: %v", err)
+		return nil, err
+	}
+	return convertPlaylist(resp.Playlist), nil
 }
 
-func (a *SubsonicAdapter) UpdatePlaylist(playlistID string, name *string, comment *string, public *bool, songIDs []string) (*adapters.Playlist, error) {
-	return nil, nil
+func (a *SubsonicAdapter) UpdatePlaylist(playlistID string, name *string, comment *string, public *bool, songIDs []string, appendSongIDs []string) (*adapters.Playlist, error) {
+	if name != nil || comment != nil || public != nil || len(appendSongIDs) > 0 {
+		_, err := a.getJson(a.makeUrl("updatePlaylist"), nil, map[string][]string{
+			"playlistId":  {playlistID},
+			"name":        {*name},
+			"comment":     {*comment},
+			"public":      {strconv.FormatBool(*public)},
+			"songIdToAdd": appendSongIDs,
+		})
+		if err != nil {
+			log.Error("Failed to update playlist: %v", err)
+			return nil, err
+		}
+	}
+
+	var playlist *adapters.Playlist
+	if len(songIDs) > 0 {
+		resp, err := a.getJson(a.makeUrl("createPlaylist"), nil, map[string][]string{
+			"playlistId": {playlistID},
+			"sondId":     songIDs,
+		})
+		if err != nil {
+			log.Error("Failed to update playlist: %v", err)
+			return nil, err
+		}
+		playlist = convertPlaylist(resp.Playlist)
+	}
+
+	if playlist == nil {
+		return a.GetPlaylistDetails(playlistID)
+	}
+	return playlist, nil
 }
 
-func (a *SubsonicAdapter) DeletePlaylist(playlistID string) error { return nil }
+func (a *SubsonicAdapter) DeletePlaylist(playlistID string) error {
+	_, err := a.getJson(a.makeUrl("deletePlaylist"), nil, map[string][]string{
+		"playlistId": {playlistID},
+	})
+	if err != nil {
+		log.Error("Failed to delete playlist: %v", err)
+		return err
+	}
+	return nil
+}

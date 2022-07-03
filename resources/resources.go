@@ -1,3 +1,4 @@
+// Package resources loads all of the UI resources that GTK needs.
 package resources
 
 import (
@@ -25,6 +26,7 @@ func loadResource(resourceName string) error {
 	return nil
 }
 
+// LoadResources loads all of the UI resources.
 func LoadResources() {
 	// Load all of the resources
 	entries, _ := gresourceFS.ReadDir(".")
