@@ -23,5 +23,5 @@ type Playlist struct {
 }
 
 func (p *Playlist) String() string {
-	return fmt.Sprintf("Playlist(%s, %s, %d)", p.ID, p.Name, p.SongCount)
+	return fmt.Sprintf("Playlist(%s, %s)", p.ID, p.Name)
 }

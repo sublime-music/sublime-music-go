@@ -27,7 +27,7 @@
           </object>
         </child>
         <child>
-          <object class="GtkListBox">
+          <object class="GtkListBox" id="playlist-list">
             <property name="vexpand">true</property>
             <child type="placeholder">
               <object class="AdwStatusPage">
