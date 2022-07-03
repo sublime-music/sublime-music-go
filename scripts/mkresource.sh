@@ -2,6 +2,10 @@
 
 OUTFILE=$1
 shift
+PREPROCESS=$1
+shift
+ALIAS=$1
+shift
 INCLUDE_FILES=$@
 
 cat <<EOF > $OUTFILE
@@ -14,8 +18,13 @@ for FILE in $INCLUDE_FILES; do
   # Remove the "resources/" part of the path from FILE
   FILE=${FILE#*/}
   echo $FILE
+  alias=""
+  if [ "$ALIAS" = "true" ]; then
+    # get the filename of ALIAS
+    alias="alias=\"$(basename $FILE)\""
+  fi
   cat <<EOF >> $OUTFILE
-    <file preprocess="xml-stripblanks">$FILE</file>
+    <file $PREPROCESS $alias>$FILE</file>
 EOF
 done
 
