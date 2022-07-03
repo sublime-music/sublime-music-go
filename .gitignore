@@ -8,7 +8,11 @@ gtk/
 gtk4-adwaita/
 libadwaita/
 
+# Executables
 sublime-music-next
+
+# Debugging files
+passwordfile
 
 # Created by https://www.toptal.com/developers/gitignore/api/go
 # Edit at https://www.toptal.com/developers/gitignore?templates=go

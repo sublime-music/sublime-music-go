@@ -1,6 +1,6 @@
 module github.com/sumnerevans/sublime-music-next
 
-go 1.17
+go 1.18
 
 require (
 	github.com/diamondburned/gotk4-adwaita/pkg v0.0.0-20220417101956-dcc3707dc307

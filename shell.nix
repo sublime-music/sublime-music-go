@@ -38,7 +38,7 @@ mkShell {
     # Core GTK
     gdk-pixbuf
     glib
-    go
+    go_1_18
     gobject-introspection
     graphene
     gtk3

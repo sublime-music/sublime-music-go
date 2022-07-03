@@ -4,11 +4,13 @@ import (
 	"flag"
 	"io"
 	"os"
+	"strings"
 
 	"github.com/diamondburned/gotk4-adwaita/pkg/adw"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	log "github.com/sirupsen/logrus"
 
+	"github.com/sumnerevans/sublime-music-next/adapters/subsonic"
 	"github.com/sumnerevans/sublime-music-next/resources"
 	"github.com/sumnerevans/sublime-music-next/ui"
 )
@@ -28,7 +30,7 @@ func main() {
 			log.Errorf("Failed to open logging file; using default stderr: %s", err)
 		}
 	}
-	log.SetFormatter(&log.JSONFormatter{})
+	log.SetFormatter(&log.TextFormatter{})
 	log.SetLevel(log.InfoLevel)
 	log.SetReportCaller(true)
 	logLevel, err := log.ParseLevel(*logLevelStr)
@@ -37,6 +39,19 @@ func main() {
 	} else {
 		log.Errorf("Invalid loglevel '%s'. Using default 'debug'.", logLevel)
 	}
+
+	// DEBUG
+	passwordFile, _ := os.Open("passwordfile")
+	passwordBytes, _ := io.ReadAll(passwordFile)
+	password := string(passwordBytes)
+	password = strings.TrimSpace(password)
+
+	subsonicAdapter := subsonic.New("https://music.sumnerevans.com", "sumner", password, true, true)
+
+	log.Info(subsonicAdapter.GetPlaylists())
+
+	return
+	// END DEBUG
 
 	// Load the resources
 	resources.LoadResources()
