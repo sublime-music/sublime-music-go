@@ -43,7 +43,9 @@ func createPlaylistRow(playlist *adapters.Playlist) (widget gtk.Widgetter) {
 	row := gtk.NewListBoxRow()
 	row.SetActionName("app.go-to-playlist")
 	row.SetActionTargetValue(glib.NewVariantString(playlist.ID))
-	row.SetChild(gtk.NewLabel(playlist.Name))
+	label := gtk.NewLabel(playlist.Name)
+	label.SetCSSClasses([]string{"playlist-list-name"})
+	row.SetChild(label)
 	row.Show()
 	return row
 }
@@ -60,9 +62,6 @@ func (pt *PlaylistsTab) UpdatePlaylistList() {
 	playlists, err := subsonicAdapter.GetPlaylists()
 	if err != nil {
 		return
-	}
-	for _, playlist := range playlists {
-		pt.playlistList.Append(createPlaylistRow(playlist))
 	}
 	log.Info(playlists)
 	// for _, playlist := range playlists {

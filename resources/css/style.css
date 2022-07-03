@@ -20,3 +20,9 @@
 #playlist-stats {
   margin-bottom: 10px;
 }
+
+.playlist-list-name {
+  font-weight: bold;
+  font-size: 1.1em;
+  margin: 8px;
+}

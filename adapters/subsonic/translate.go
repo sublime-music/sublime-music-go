@@ -14,7 +14,7 @@ func ConvertPlaylist(in *Playlist) (out *adapters.Playlist) {
 	out.ID = in.ID.String()
 	out.Name = in.Name
 	out.SongCount = in.SongCount
-	out.Duration = in.Duration
+	out.Duration = in.Duration.Duration()
 	out.Songs = make([]*adapters.Song, len(in.Songs))
 	for i, song := range in.Songs {
 		out.Songs[i] = ConvertSong(song)

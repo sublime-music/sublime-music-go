@@ -31,6 +31,25 @@ func (id *SubsonicIdentifier) String() string {
 	return string(*id)
 }
 
+// Subsonic reports duration in seconds.
+type SubsonicDuration time.Duration
+
+// Custom unmarshaller for SubsonicDuration that converts seconds to an
+// actually usable time.Duration.
+func (d *SubsonicDuration) UnmarshalJSON(data []byte) error {
+	var i int
+	if err := json.Unmarshal(data, &i); err != nil {
+		return err
+	}
+	*d = SubsonicDuration(time.Duration(i) * time.Second)
+	return nil
+}
+
+func (d *SubsonicDuration) Duration() *time.Duration {
+	duration := time.Duration(*d)
+	return &duration
+}
+
 type Song struct {
 }
 
@@ -38,7 +57,7 @@ type Playlist struct {
 	ID        *SubsonicIdentifier `json:"id"`
 	Name      string              `json:"name"`
 	SongCount *int                `json:"songCount"`
-	Duration  *time.Duration      `json:"duration"`
+	Duration  *SubsonicDuration   `json:"duration"`
 	Songs     []*Song             `json:"entry"`
 	Created   *time.Time          `json:"created"`
 	Changed   *time.Time          `json:"changed"`
