@@ -58,14 +58,16 @@ mkShell {
     gnumake
     pkgconfig
     vulkan-headers
-  ] ++ lib.lists.optional (!forCI) [
-    gi-docgen
-    gopls
-    gotools
-    initGitPkg
-    vgo2nix
-    yq-go
-  ];
+  ] ++ lib.lists.optional
+    (!forCI)
+    [
+      gi-docgen
+      gopls
+      gotools
+      initGitPkg
+      vgo2nix
+      yq-go
+    ];
 
   # Workaround for the lack of wrapGAppsHook:
   # https://nixos.wiki/wiki/Development_environment_with_nix-shell

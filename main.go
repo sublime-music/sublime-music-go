@@ -41,10 +41,11 @@ func main() {
 	// Load the resources
 	resources.LoadResources()
 
-	app := SublimeMusic{
+	app := &SublimeMusic{
 		Application: adw.NewApplication("app.sublimemusic.SublimeMusicNext", gio.ApplicationFlagsNone),
 	}
 	app.ConnectActivate(app.activate)
+	ui.SetupActions(app.Application)
 
 	// Exit with whatever code the app exits with
 	os.Exit(app.Run(os.Args))

@@ -1,0 +1,158 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<interface>
+  <requires lib="gtk" version="4.6" />
+  <requires lib="libadwaita" version="1.1" />
+  <object class="AdwPreferencesWindow" id="root">
+    <child>
+      <object class="AdwPreferencesPage">
+        <property name="icon-name">play-large-symbolic</property>
+        <property name="name">player-settings</property>
+        <property name="title">Player Settings</property>
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title">Notifications</property>
+            <child>
+              <object class="AdwActionRow">
+                <property name="title">Enable Song Notifications</property>
+                <property name="subtitle">Whether to show a desktop notification for each new song that starts playing.</property>
+                <child>
+                  <object class="GtkSwitch" id="enable-song-notifications" />
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title">Local Playback Settings</property>
+            <child>
+              <object class="AdwComboRow">
+                <property name="title">Replay Gain</property>
+                <property name="model">
+                  <object class="GtkStringList">
+                    <items>
+                      <item translatable="yes">Disabled</item>
+                      <item translatable="yes">Track</item>
+                      <item translatable="yes">Album</item>
+                    </items>
+                  </object>
+                </property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title">Chromecast Settings</property>
+            <child>
+              <object class="AdwActionRow">
+                <property name="title">Serve Local Files to Chromecasts</property>
+                <property name="subtitle">Whether to open a web server so that Chromecasts can play media directly from this device.</property>
+                <child>
+                  <object class="GtkSwitch" id="serve-local-files-to-chromecast" />
+                </child>
+              </object>
+            </child>
+            <!-- Need to wait for libadwaita v1.2 -->
+            <!-- <child> -->
+            <!--   <object class="AdwEntryRow"> -->
+            <!--     <property name="title">LAN Server Port</property> -->
+            <!--     <child> -->
+            <!--       <object class="GtkSwitch" id="serve-local-files-to-chromecast" /> -->
+            <!--     </child> -->
+            <!--   </object> -->
+            <!-- </child> -->
+          </object>
+        </child>
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title">Download Settings</property>
+            <child>
+              <object class="AdwActionRow">
+                <property name="title">Allow Song Downloads</property>
+                <property name="subtitle">Whether to enable downloading songs from the server.</property>
+                <child>
+                  <object class="GtkSwitch" id="allow-song-downloads" />
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwActionRow">
+                <property name="title">When Streaming, Also Download Song</property>
+                <property name="subtitle">Whether to download the song while it is streaming for later offline use.</property>
+                <binding name="sensitive">
+                  <lookup name="active">allow-song-downloads</lookup>
+                </binding>
+                <child>
+                  <object class="GtkSwitch" id="allow-download-while-streaming" />
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwActionRow">
+                <property name="title">Number of Songs to Prefetch</property>
+                <property name="subtitle">How many songs in the play queue to preemptively download.</property>
+                <binding name="sensitive">
+                  <lookup name="active">allow-song-downloads</lookup>
+                </binding>
+                <child>
+                  <object class="GtkSpinButton" id="num-songs-prefetch">
+                    <property name="digits">0</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwActionRow">
+                <property name="title">Maximum Concurrent Downloads</property>
+                <property name="subtitle">How many songs should be allowed to downloaded at once?</property>
+                <binding name="sensitive">
+                  <lookup name="active">allow-song-downloads</lookup>
+                </binding>
+                <child>
+                  <object class="GtkSpinButton" id="max-concurrent-downloads">
+                    <property name="digits">0</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwPreferencesPage">
+        <property name="icon-name">chain-link-loose-symbolic</property>
+        <property name="name">connections</property>
+        <property name="title">Connections</property>
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title">Connections</property>
+            <property name="description">All of your available connections to music servers.</property>
+            <property name="header-suffix">
+              <object class="GtkButton">
+                <style>
+                  <class name="flat" />
+                </style>
+                <child>
+                  <object class="AdwButtonContent">
+                    <property name="label">Add Connection</property>
+                    <property name="icon-name">plus-symbolic</property>
+                  </object>
+                </child>
+              </object>
+            </property>
+            <child>
+              <object class="AdwStatusPage" id="connections-placeholder">
+                <property name="title">No Connections</property>
+                <property name="description">You haven't configured any connections yet</property>
+                <property name="icon-name">chain-link-loose-symbolic</property>
+                <property name="vexpand">true</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

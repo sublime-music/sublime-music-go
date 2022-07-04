@@ -242,7 +242,7 @@
               <object class="GtkBox">
                 <property name="orientation">horizontal</property>
                 <child>
-                  <object class="GtkToggleButton" id="volume-mute-toggle">
+                  <object class="GtkButton" id="volume-mute-toggle">
                     <style>
                       <class name="flat" />
                     </style>

@@ -8,8 +8,9 @@
       <object class="AdwHeaderBar">
         <property name="centering-policy">strict</property>
         <child type="start">
-          <object class="GtkMenuButton" id="search-button">
+          <object class="GtkButton" id="search-button">
             <property name="icon-name">edit-find-symbolic</property>
+            <property name="action-name">app.open-search</property>
           </object>
         </child>
         <child type="title">
@@ -18,13 +19,15 @@
           </object>
         </child>
         <child type="end">
-          <object class="GtkMenuButton" id="settings-button">
+          <object class="GtkButton" id="settings-button">
             <property name="icon-name">settings-symbolic</property>
+            <property name="action-name">app.open-preferences</property>
           </object>
         </child>
         <child type="end">
-          <object class="GtkMenuButton" id="downloads-button">
+          <object class="GtkButton" id="downloads-button">
             <property name="icon-name">folder-download-symbolic</property>
+            <property name="action-name">app.open-downloads</property>
           </object>
         </child>
       </object>
