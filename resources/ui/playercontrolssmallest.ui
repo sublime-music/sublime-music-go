@@ -68,20 +68,6 @@
             <property name="spacing">8</property>
             <property name="baseline-position">center</property>
             <child>
-              <object class="GtkButton" id="previous-button">
-                <property name="name">prev-button</property>
-                <style>
-                  <class name="flat" />
-                </style>
-                <child>
-                  <object class="GtkImage">
-                    <property name="icon-name">media-skip-backward-symbolic</property>
-                    <property name="icon-size">large</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
               <object class="GtkButton" id="play-button">
                 <property name="name">play-button</property>
                 <style>
