@@ -24,17 +24,20 @@
 }
 
 /* Player Controls */
-#player-controls-bar #song-title {
+#player-controls-bar #song-title,
+#player-controls-bar-small #song-title {
   margin-bottom: 3px;
   font-weight: bold;
 }
 
-#player-controls-bar #album-name {
+#player-controls-bar #album-name,
+#player-controls-bar-small #album-name {
   margin-bottom: 3px;
   font-style: italic;
 }
 
-#player-controls-bar #play-button {
+#player-controls-bar #play-button,
+#player-controls-bar-small #play-button {
   min-height: 50px;
   min-width: 50px;
 }
@@ -57,4 +60,11 @@
 /* Make the play icon look centered. */
 #player-controls-bar #play-button image {
   margin-left: 2px;
+}
+
+/* Player Controls Small */
+#player-controls-bar-small #prev-button image,
+#player-controls-bar-small #play-button image,
+#player-controls-bar-small #next-button image {
+  margin: 0 8px;
 }

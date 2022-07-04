@@ -28,8 +28,10 @@
                 <property name="label">Song Title</property>
                 <property name="name">song-title</property>
                 <property name="halign">start</property>
+                <property name="xalign">0</property>
                 <property name="use-markup">true</property>
                 <property name="ellipsize">end</property>
+                <property name="width-chars">15</property>
               </object>
             </child>
             <child>
@@ -37,8 +39,10 @@
                 <property name="label">Album Name</property>
                 <property name="name">album-name</property>
                 <property name="halign">start</property>
+                <property name="xalign">0</property>
                 <property name="use-markup">true</property>
                 <property name="ellipsize">end</property>
+                <property name="width-chars">15</property>
               </object>
             </child>
             <child>
@@ -46,8 +50,10 @@
                 <property name="label">Artist Name</property>
                 <property name="name">artist-name</property>
                 <property name="halign">start</property>
+                <property name="xalign">0</property>
                 <property name="use-markup">true</property>
                 <property name="ellipsize">end</property>
+                <property name="width-chars">15</property>
               </object>
             </child>
             <child>

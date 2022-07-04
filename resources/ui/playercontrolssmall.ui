@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<interface>
+  <requires lib="gtk" version="4.6" />
+  <requires lib="libadwaita" version="1.1" />
+  <object class="GtkBox" id="root">
+    <property name="orientation">vertical</property>
+    <child>
+      <object class="GtkProgressBar" id="song-progress-indicator">
+        <property name="hexpand">true</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkActionBar">
+        <property name="name">player-controls-bar-small</property>
+        <child type="start">
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <property name="spacing">5</property>
+            <child>
+              <object class="GtkImage">
+                <property name="icon-name">playlist-symbolic</property>
+                <property name="height-request">50</property>
+                <property name="width-request">50</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="vexpand">true</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label">Song Title</property>
+                    <property name="name">song-title</property>
+                    <property name="halign">start</property>
+                    <property name="use-markup">true</property>
+                    <property name="ellipsize">end</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label">Artist Name</property>
+                    <property name="name">artist-name</property>
+                    <property name="halign">start</property>
+                    <property name="use-markup">true</property>
+                    <property name="ellipsize">end</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="vexpand">true</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child type="end">
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <property name="spacing">8</property>
+            <property name="baseline-position">center</property>
+            <child>
+              <object class="GtkButton" id="previous-button">
+                <property name="name">prev-button</property>
+                <style>
+                  <class name="flat" />
+                </style>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">media-skip-backward-symbolic</property>
+                    <property name="icon-size">large</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="play-button">
+                <property name="name">play-button</property>
+                <style>
+                  <class name="flat" />
+                </style>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">play-large-symbolic</property>
+                    <property name="icon-size">large</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="next-button">
+                <property name="name">next-button</property>
+                <style>
+                  <class name="flat" />
+                </style>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">media-skip-forward-symbolic</property>
+                    <property name="icon-size">large</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
