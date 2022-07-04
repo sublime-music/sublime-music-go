@@ -74,6 +74,7 @@
                     <property name="label">Playlist Name</property>
                     <property name="name">playlist-name-small</property>
                     <property name="halign">start</property>
+                    <property name="ellipsize">end</property>
                   </object>
                 </child>
               </object>
@@ -111,6 +112,7 @@
                             <property name="label">Playlist Name</property>
                             <property name="name">playlist-name</property>
                             <property name="halign">start</property>
+                            <property name="ellipsize">end</property>
                           </object>
                         </child>
                         <child>

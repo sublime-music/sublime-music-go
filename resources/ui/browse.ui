@@ -6,6 +6,7 @@
     <child>
       <object class="GtkLabel">
         <property name="label">This 3 is a long label to the leaflet works</property>
+        <property name="wrap">true</property>
       </object>
     </child>
   </object>
