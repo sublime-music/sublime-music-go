@@ -27,6 +27,6 @@ resources/icons.gresource.xml: $(ICON_FILES)
 
 resources/ui.gresource.xml: $(UI_FILES)
 	bash ./scripts/mkresource.sh $@ \
-		'preprocess="xml-stripblanks"' false $^
+		'' false $^
 
 .PHONY: all clean

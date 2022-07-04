@@ -8,9 +8,7 @@ import (
 	"github.com/diamondburned/gotk4-adwaita/pkg/adw"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
-	log "github.com/sirupsen/logrus"
 	"github.com/sumnerevans/sublime-music-next/adapters"
-	"github.com/sumnerevans/sublime-music-next/adapters/subsonic"
 )
 
 type PlaylistsTab struct {
@@ -57,13 +55,13 @@ func (pt *PlaylistsTab) UpdatePlaylistList() {
 	password := string(passwordBytes)
 	password = strings.TrimSpace(password)
 
-	subsonicAdapter := subsonic.New("https://music.sumnerevans.com", "sumner", password, true, true)
+	// subsonicAdapter := subsonic.New("https://music.sumnerevans.com", "sumner", password, true, true)
 
-	playlists, err := subsonicAdapter.GetPlaylists()
-	if err != nil {
-		return
-	}
-	log.Info(playlists)
+	// playlists, err := subsonicAdapter.GetPlaylists()
+	// if err != nil {
+	// 	return
+	// }
+	// log.Info(playlists)
 	// for _, playlist := range playlists {
 	// 	pt.playlistListModel.Find
 	// }

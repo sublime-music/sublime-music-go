@@ -8,15 +8,5 @@
         <property name="label">This 3 is a long label to the leaflet works</property>
       </object>
     </child>
-    <child>
-      <object class="GtkLabel">
-        <property name="label">This 2 is a long label to the leaflet works</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkLabel">
-        <property name="label">This 1 is a long label to the leaflet works</property>
-      </object>
-    </child>
   </object>
 </interface>

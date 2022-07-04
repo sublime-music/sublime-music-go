@@ -3,9 +3,266 @@
   <requires lib="gtk" version="4.6" />
   <requires lib="libadwaita" version="1.1" />
   <object class="GtkActionBar" id="root">
-    <child>
-      <object class="GtkLabel">
-        <property name="label">Test</property>
+    <property name="name">player-controls-bar</property>
+    <child type="start">
+      <object class="GtkBox">
+        <property name="orientation">horizontal</property>
+        <property name="spacing">5</property>
+        <child>
+          <object class="GtkImage">
+            <property name="icon-name">playlist-symbolic</property>
+            <property name="height-request">70</property>
+            <property name="width-request">70</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkBox">
+                <property name="vexpand">true</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">Song Title</property>
+                <property name="name">song-title</property>
+                <property name="halign">start</property>
+                <property name="use-markup">true</property>
+                <property name="ellipsize">end</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">Album Name</property>
+                <property name="name">album-name</property>
+                <property name="halign">start</property>
+                <property name="use-markup">true</property>
+                <property name="ellipsize">end</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">Artist Name</property>
+                <property name="name">artist-name</property>
+                <property name="halign">start</property>
+                <property name="use-markup">true</property>
+                <property name="ellipsize">end</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="vexpand">true</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child type="center">
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <property name="spacing">5</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">-:--</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkScale" id="song-scrubber">
+                <property name="width-request">400</property>
+                <property name="orientation">horizontal</property>
+                <property name="draw-value">false</property>
+                <property name="restrict-to-fill-level">false</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">-:--</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <property name="spacing">8</property>
+            <property name="baseline-position">center</property>
+            <child>
+              <object class="GtkBox">
+                <property name="hexpand">true</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="vexpand">true</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkToggleButton" id="repeat-button">
+                    <property name="name">repeat-button</property>
+                    <property name="icon-name">media-playlist-repeat-symbolic</property>
+                    <style>
+                      <class name="circular" />
+                      <class name="flat" />
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="vexpand">true</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="previous-button">
+                <style>
+                  <class name="flat" />
+                </style>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">media-skip-backward-symbolic</property>
+                    <property name="icon-size">large</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="play-button">
+                <property name="name">play-button</property>
+                <style>
+                  <class name="circular" />
+                </style>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">play-large-symbolic</property>
+                    <property name="icon-size">large</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="next-button">
+                <style>
+                  <class name="flat" />
+                </style>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">media-skip-forward-symbolic</property>
+                    <property name="icon-size">large</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="vexpand">true</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkToggleButton" id="shuffle-button">
+                    <property name="name">shuffle-button</property>
+                    <property name="icon-name">media-playlist-shuffle-symbolic</property>
+                    <style>
+                      <class name="circular" />
+                      <class name="flat" />
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="vexpand">true</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="hexpand">true</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child type="end">
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkBox">
+            <property name="vexpand">true</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <property name="spacing">8</property>
+            <property name="name">devices-play-queue-volume-box</property>
+            <child>
+              <object class="GtkButton" id="devices-button">
+                <style>
+                  <class name="flat" />
+                </style>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">chromecast-symbolic</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="play-queue-button">
+                <style>
+                  <class name="flat" />
+                </style>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">list-compact-symbolic</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="orientation">horizontal</property>
+                <child>
+                  <object class="GtkToggleButton" id="volume-mute-toggle">
+                    <style>
+                      <class name="flat" />
+                    </style>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon-name">audio-volume-high-symbolic</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkScale" id="volume-slider">
+                    <property name="width-request">110</property>
+                    <property name="orientation">horizontal</property>
+                    <property name="draw-value">false</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="vexpand">true</property>
+          </object>
+        </child>
       </object>
     </child>
   </object>

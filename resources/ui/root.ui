@@ -8,13 +8,23 @@
       <object class="AdwHeaderBar">
         <property name="centering-policy">strict</property>
         <child type="start">
-          <object class="GtkMenuButton" id="SearchButton">
+          <object class="GtkMenuButton" id="search-button">
             <property name="icon-name">edit-find-symbolic</property>
           </object>
         </child>
         <child type="title">
           <object class="AdwViewSwitcherTitle" id="switcher-title">
             <property name="stack">main-stack</property>
+          </object>
+        </child>
+        <child type="end">
+          <object class="GtkMenuButton" id="settings-button">
+            <property name="icon-name">settings-symbolic</property>
+          </object>
+        </child>
+        <child type="end">
+          <object class="GtkMenuButton" id="downloads-button">
+            <property name="icon-name">folder-download-symbolic</property>
           </object>
         </child>
       </object>

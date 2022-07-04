@@ -1,7 +1,3 @@
-#playlist-info-box {
-  max-height: 320px;
-}
-
 #playlist-name,
 #playlist-name-small {
   font-weight: bold;
@@ -25,4 +21,40 @@
   font-weight: bold;
   font-size: 1.1em;
   margin: 8px;
+}
+
+/* Player Controls */
+#player-controls-bar #song-title {
+  margin-bottom: 3px;
+  font-weight: bold;
+}
+
+#player-controls-bar #album-name {
+  margin-bottom: 3px;
+  font-style: italic;
+}
+
+#player-controls-bar #play-button {
+  min-height: 50px;
+  min-width: 50px;
+}
+
+#player-controls-bar #repeat-button image,
+#player-controls-bar #shuffle-button image,
+#player-controls-bar #devices-play-queue-volume-box image {
+  -gtk-icon-size: 20px;
+}
+
+#player-controls-bar #repeat-button image,
+#player-controls-bar #shuffle-button image {
+  margin: 5px;
+}
+
+#player-controls-bar #devices-play-queue-volume-box image {
+  margin: 5px 2px;
+}
+
+/* Make the play icon look centered. */
+#player-controls-bar #play-button image {
+  margin-left: 2px;
 }

@@ -4,8 +4,30 @@
   <requires lib="libadwaita" version="1.1" />
   <object class="AdwLeaflet" id="root">
     <child>
-      <object class="GtkLabel">
-        <property name="label">This is a long label to the leaflet works</property>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <property name="width-request">300</property>
+        <child>
+          <object class="GtkActionBar">
+            <child type="end">
+              <object class="GtkButton">
+                <property name="icon-name">refresh-symbolic</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkListBox" id="artists-list">
+            <property name="vexpand">true</property>
+            <child type="placeholder">
+              <object class="AdwStatusPage">
+                <property name="icon-name">library-artists-symbolic</property>
+                <property name="title">No Artists</property>
+                <property name="description">There are no artists on the server</property>
+              </object>
+            </child>
+          </object>
+        </child>
       </object>
     </child>
     <child>
