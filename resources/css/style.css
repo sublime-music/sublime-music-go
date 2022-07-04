@@ -1,3 +1,9 @@
+/* List Actions */
+#artists-list-actions button image,
+#playlist-list-actions button image {
+  margin: 5px 0;
+}
+
 #playlist-name,
 #playlist-name-small {
   font-weight: bold;
@@ -40,6 +46,10 @@
 #player-controls-bar-small #play-button {
   min-height: 50px;
   min-width: 50px;
+}
+
+#player-controls-bar #devices-play-queue-volume-box {
+  margin-right: 5px;
 }
 
 #player-controls-bar #repeat-button image,

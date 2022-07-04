@@ -9,6 +9,7 @@
         <property name="width-request">300</property>
         <child>
           <object class="GtkActionBar">
+            <property name="name">playlist-list-actions</property>
             <child>
               <object class="GtkButton">
                 <property name="child">
@@ -168,11 +169,6 @@
                         <property name="icon-name">playlist-symbolic</property>
                         <property name="title">No Songs</property>
                         <property name="description">This playlist doesn't have any songs</property>
-                        <property name="child">
-                          <object class="GtkButton">
-                            <property name="label">Add Songs</property>
-                          </object>
-                        </property>
                       </object>
                     </child>
                   </object>

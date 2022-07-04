@@ -242,22 +242,11 @@
               <object class="GtkBox">
                 <property name="orientation">horizontal</property>
                 <child>
-                  <object class="GtkButton" id="volume-mute-toggle">
+                  <object class="GtkVolumeButton" id="volume-slider">
+                    <property name="use-symbolic">true</property>
                     <style>
                       <class name="flat" />
                     </style>
-                    <child>
-                      <object class="GtkImage">
-                        <property name="icon-name">audio-volume-high-symbolic</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkScale" id="volume-slider">
-                    <property name="width-request">110</property>
-                    <property name="orientation">horizontal</property>
-                    <property name="draw-value">false</property>
                   </object>
                 </child>
               </object>

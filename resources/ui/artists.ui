@@ -9,6 +9,7 @@
         <property name="width-request">300</property>
         <child>
           <object class="GtkActionBar">
+            <property name="name">artists-list-actions</property>
             <child type="end">
               <object class="GtkButton">
                 <property name="icon-name">refresh-symbolic</property>
