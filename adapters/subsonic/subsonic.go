@@ -11,11 +11,12 @@ import (
 	"math/big"
 	"net/http"
 	"net/url"
+	"sort"
 	"strconv"
 	"time"
 
 	log "github.com/sirupsen/logrus"
-	"github.com/sumnerevans/sublime-music-next/adapters"
+	"github.com/sumnerevans/sublime-music-next/adapters/base"
 )
 
 type SubsonicAdapter struct {
@@ -28,7 +29,7 @@ type SubsonicAdapter struct {
 	client  *http.Client
 	version string
 
-	capabilities *adapters.Capabilities
+	capabilities *base.Capabilities
 }
 
 func New(hostname, username, password string, verifyCert, useSaltAuth bool) (adapter *SubsonicAdapter) {
@@ -42,7 +43,7 @@ func New(hostname, username, password string, verifyCert, useSaltAuth bool) (ada
 		client:  &http.Client{},
 		version: "1.8.0",
 
-		capabilities: &adapters.Capabilities{
+		capabilities: &base.Capabilities{
 			CanGetPlaylists:       true,
 			CanGetPlaylistDetails: true,
 			CanCreatePlaylist:     true,
@@ -59,7 +60,7 @@ func (a *SubsonicAdapter) OnOfflineModeChange(offlineMode bool) {
 }
 
 // CAPABILITIES
-func (a *SubsonicAdapter) GetCapabilities() *adapters.Capabilities { return a.capabilities }
+func (a *SubsonicAdapter) GetCapabilities() *base.Capabilities { return a.capabilities }
 
 // DATA RETRIEVAL METHODS
 // Helper methods
@@ -144,21 +145,22 @@ func (a *SubsonicAdapter) getJson(url string, timeout *time.Duration, queryParam
 
 // Playlists
 
-func (a *SubsonicAdapter) GetPlaylists() ([]*adapters.Playlist, error) {
+func (a *SubsonicAdapter) GetPlaylists() ([]*base.Playlist, error) {
 	resp, err := a.getJson(a.makeUrl("getPlaylists"), nil, nil)
 	if err != nil {
 		log.Errorf("Failed to get playlists: %v", err)
 		return nil, err
 	}
 
-	var playlists []*adapters.Playlist
+	var playlists []*base.Playlist
 	for _, playlist := range resp.Playlists.Playlist {
 		playlists = append(playlists, convertPlaylist(playlist))
 	}
+	sort.Slice(playlists, func(i, j int) bool { return playlists[i].Name < playlists[j].Name })
 	return playlists, nil
 }
 
-func (a *SubsonicAdapter) GetPlaylistDetails(playlistID string) (*adapters.Playlist, error) {
+func (a *SubsonicAdapter) GetPlaylistDetails(playlistID string) (*base.Playlist, error) {
 	resp, err := a.getJson(a.makeUrl("getPlaylist"), nil, map[string][]string{
 		"id": {playlistID},
 	})
@@ -170,7 +172,7 @@ func (a *SubsonicAdapter) GetPlaylistDetails(playlistID string) (*adapters.Playl
 	return convertPlaylist(resp.Playlist), nil
 }
 
-func (a *SubsonicAdapter) CreatePlaylist(name string, songIDs []string) (*adapters.Playlist, error) {
+func (a *SubsonicAdapter) CreatePlaylist(name string, songIDs []string) (*base.Playlist, error) {
 	resp, err := a.getJson(a.makeUrl("createPlaylist"), nil, map[string][]string{
 		"name":   {name},
 		"sondId": songIDs,
@@ -182,7 +184,7 @@ func (a *SubsonicAdapter) CreatePlaylist(name string, songIDs []string) (*adapte
 	return convertPlaylist(resp.Playlist), nil
 }
 
-func (a *SubsonicAdapter) UpdatePlaylist(playlistID string, name *string, comment *string, public *bool, songIDs []string, appendSongIDs []string) (*adapters.Playlist, error) {
+func (a *SubsonicAdapter) UpdatePlaylist(playlistID string, name *string, comment *string, public *bool, songIDs []string, appendSongIDs []string) (*base.Playlist, error) {
 	if name != nil || comment != nil || public != nil || len(appendSongIDs) > 0 {
 		_, err := a.getJson(a.makeUrl("updatePlaylist"), nil, map[string][]string{
 			"playlistId":  {playlistID},
@@ -197,7 +199,7 @@ func (a *SubsonicAdapter) UpdatePlaylist(playlistID string, name *string, commen
 		}
 	}
 
-	var playlist *adapters.Playlist
+	var playlist *base.Playlist
 	if len(songIDs) > 0 {
 		resp, err := a.getJson(a.makeUrl("createPlaylist"), nil, map[string][]string{
 			"playlistId": {playlistID},

@@ -1,5 +1,5 @@
 // Package adapters provides all of the connectors to the backend services.
-package adapters
+package base
 
 // The Capabilities struct contains a bunch of booleans that determine what
 // things the adapter can be used to do.

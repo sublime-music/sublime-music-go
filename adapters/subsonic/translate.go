@@ -1,26 +1,31 @@
 package subsonic
 
 import (
-	"github.com/sumnerevans/sublime-music-next/adapters"
+	"github.com/sumnerevans/sublime-music-next/adapters/base"
 )
 
-func convertSong(in *Song) (out *adapters.Song) {
-	out = &adapters.Song{}
-	return
-}
-
-func convertPlaylist(in *Playlist) (out *adapters.Playlist) {
+// Convert a Subsonic API song to an generic Adapter song.
+func convertSong(in *Song) (out *base.Song) {
 	if in == nil {
-		out = nil
 		return
 	}
 
-	out = &adapters.Playlist{}
+	out = &base.Song{}
+	return
+}
+
+// Convert a Subsonic API playlist to an generic Adapter playlist.
+func convertPlaylist(in *Playlist) (out *base.Playlist) {
+	if in == nil {
+		return
+	}
+
+	out = &base.Playlist{}
 	out.ID = in.ID.String()
 	out.Name = in.Name
 	out.SongCount = in.SongCount
 	out.Duration = in.Duration.Duration()
-	out.Songs = make([]*adapters.Song, len(in.Songs))
+	out.Songs = make([]*base.Song, len(in.Songs))
 	for i, song := range in.Songs {
 		out.Songs[i] = convertSong(song)
 	}

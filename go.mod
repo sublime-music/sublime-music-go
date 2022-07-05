@@ -5,6 +5,7 @@ go 1.18
 require (
 	github.com/diamondburned/gotk4-adwaita/pkg v0.0.0-20220417101956-dcc3707dc307
 	github.com/diamondburned/gotk4/pkg v0.0.0-20220529201008-66c7fe5d2b7c
+	github.com/mattn/go-sqlite3 v1.14.14
 	github.com/sirupsen/logrus v1.8.1
 )
 

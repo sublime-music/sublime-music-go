@@ -28,15 +28,16 @@
           </object>
         </child>
         <child>
-          <object class="GtkListBox" id="playlist-list">
+          <object class="GtkListView" id="playlist-list">
             <property name="vexpand">true</property>
-            <child type="placeholder">
-              <object class="AdwStatusPage">
-                <property name="icon-name">playlist-symbolic</property>
-                <property name="title">No Playlists</property>
-                <property name="description">There are no playlists on the server</property>
-              </object>
-            </child>
+            <property name="single-click-activate">true</property>
+            <!-- <child type="placeholder"> -->
+            <!--   <object class="AdwStatusPage"> -->
+            <!--     <property name="icon-name">playlist-symbolic</property> -->
+            <!--     <property name="title">No Playlists</property> -->
+            <!--     <property name="description">There are no playlists on the server</property> -->
+            <!--   </object> -->
+            <!-- </child> -->
           </object>
         </child>
       </object>

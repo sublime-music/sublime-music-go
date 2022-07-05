@@ -71,6 +71,7 @@ type Playlists struct {
 	Playlist []*Playlist `json:"playlist"`
 }
 
+// SubsonicError represents an error from the Subsonic API.
 type SubsonicError struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
@@ -82,10 +83,7 @@ func (err *SubsonicError) Error() string {
 
 func (err *SubsonicError) Is(other error) bool {
 	otherErr, ok := other.(*SubsonicError)
-	if !ok {
-		return false
-	}
-	return otherErr.Code == err.Code && otherErr.Message == err.Message
+	return ok && otherErr.Code == err.Code && otherErr.Message == err.Message
 }
 
 type SubsonicResponse struct {
