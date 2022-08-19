@@ -29,11 +29,8 @@ jobs:
           go install golang.org/x/tools/cmd/goimports@latest
           export PATH="$HOME/go/bin:$PATH"
 
-      - name: Install pre-commit
-        run: pip install pre-commit
-
-      - name: Lint
-        run: pre-commit run -a
+      - name: Run pre-commit
+        uses: pre-commit/action@v3.0.0
 
   build:
     runs-on: ubuntu-22.04
@@ -52,8 +49,7 @@ jobs:
           sudo apt update
           sudo apt install -y libgraphene-1.0-dev libgtk-4-dev libadwaita-1-dev
 
-      - name: make
-        run: make
+      - run: make
 
       - uses: actions/upload-artifact@v3
         with:
