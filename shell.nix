@@ -65,7 +65,6 @@ mkShell {
       gopls
       gotools
       initGitPkg
-      vgo2nix
       yq-go
     ];
 
