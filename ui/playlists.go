@@ -5,7 +5,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
-	log "github.com/sirupsen/logrus"
+	"github.com/rs/zerolog/log"
 
 	"github.com/sumnerevans/sublime-music-next/adapters/base"
 )
@@ -74,7 +74,7 @@ func (pt *PlaylistsTab) UpdatePlaylistList() {
 	if err != nil {
 		return
 	}
-	log.Info(playlists)
+	log.Info().Interface("playlists", playlists).Msg("playlists")
 
 	// c := pt.playlistList.FirstChild()
 

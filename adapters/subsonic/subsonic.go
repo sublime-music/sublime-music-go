@@ -15,7 +15,7 @@ import (
 	"strconv"
 	"time"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/rs/zerolog/log"
 	"github.com/sumnerevans/sublime-music-next/adapters/base"
 )
 
@@ -104,7 +104,7 @@ func (a *SubsonicAdapter) getParams() map[string]string {
 }
 
 func (a *SubsonicAdapter) get(url string, timeout *time.Duration, queryParams url.Values) (*http.Response, error) {
-	log.Debugf("GET %s %v", url, queryParams)
+	log.Debug().Str("url", url).Interface("query_params", queryParams).Msg("GET")
 	// TODO actually use the timeout
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
@@ -148,7 +148,7 @@ func (a *SubsonicAdapter) getJson(url string, timeout *time.Duration, queryParam
 func (a *SubsonicAdapter) GetPlaylists() ([]*base.Playlist, error) {
 	resp, err := a.getJson(a.makeUrl("getPlaylists"), nil, nil)
 	if err != nil {
-		log.Errorf("Failed to get playlists: %v", err)
+		log.Error().Err(err).Msg("Failed to get playlists")
 		return nil, err
 	}
 
@@ -165,7 +165,7 @@ func (a *SubsonicAdapter) GetPlaylistDetails(playlistID string) (*base.Playlist,
 		"id": {playlistID},
 	})
 	if err != nil {
-		log.Errorf("Failed to get playlist: %v", err)
+		log.Error().Err(err).Msg("Failed to get playlist")
 		return nil, err
 	}
 
@@ -178,7 +178,7 @@ func (a *SubsonicAdapter) CreatePlaylist(name string, songIDs []string) (*base.P
 		"sondId": songIDs,
 	})
 	if err != nil {
-		log.Error("Failed to create playlist: %v", err)
+		log.Error().Err(err).Msg("Failed to create playlist")
 		return nil, err
 	}
 	return convertPlaylist(resp.Playlist), nil
@@ -194,7 +194,7 @@ func (a *SubsonicAdapter) UpdatePlaylist(playlistID string, name *string, commen
 			"songIdToAdd": appendSongIDs,
 		})
 		if err != nil {
-			log.Error("Failed to update playlist: %v", err)
+			log.Error().Err(err).Msg("Failed to update playlist")
 			return nil, err
 		}
 	}
@@ -206,7 +206,7 @@ func (a *SubsonicAdapter) UpdatePlaylist(playlistID string, name *string, commen
 			"sondId":     songIDs,
 		})
 		if err != nil {
-			log.Error("Failed to update playlist: %v", err)
+			log.Error().Err(err).Msg("Failed to update playlist")
 			return nil, err
 		}
 		playlist = convertPlaylist(resp.Playlist)
@@ -223,7 +223,7 @@ func (a *SubsonicAdapter) DeletePlaylist(playlistID string) error {
 		"playlistId": {playlistID},
 	})
 	if err != nil {
-		log.Error("Failed to delete playlist: %v", err)
+		log.Error().Err(err).Msg("Failed to delete playlist")
 		return err
 	}
 	return nil

@@ -8,7 +8,7 @@ import (
 
 	"github.com/diamondburned/gotk4-adwaita/pkg/adw"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	log "github.com/sirupsen/logrus"
+	"github.com/rs/zerolog"
 
 	"github.com/sumnerevans/sublime-music-next/adapters/base"
 	"github.com/sumnerevans/sublime-music-next/adapters/subsonic"
@@ -22,24 +22,19 @@ func main() {
 	flag.Parse()
 
 	// Configure logging
+	var log zerolog.Logger
 	if *logFilename != "" {
 		logFile, err := os.OpenFile(*logFilename, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0600)
-		if err == nil {
-			mw := io.MultiWriter(os.Stdout, logFile)
-			log.SetOutput(mw)
-		} else {
-			log.Errorf("Failed to open logging file; using default stderr: %s", err)
+		if err != nil {
+			panic("Failed to open log file")
 		}
-	}
-	log.SetFormatter(&log.TextFormatter{})
-	log.SetLevel(log.InfoLevel)
-	// log.SetReportCaller(true)
-	logLevel, err := log.ParseLevel(*logLevelStr)
-	if err == nil {
-		log.SetLevel(logLevel)
+		log = zerolog.New(logFile)
 	} else {
-		log.Errorf("Invalid loglevel '%s'. Using default 'debug'.", logLevel)
+		log = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
 	}
+	log = log.With().Timestamp().Logger()
+	// TODO set level
+	log.Info().Str("log_level", *logLevelStr).Msg("log level")
 
 	// Load the GTK resources. This has to happen after log setup so that the
 	// proper logs can be shown.

@@ -4,7 +4,7 @@ import (
 	"database/sql"
 
 	_ "github.com/mattn/go-sqlite3"
-	log "github.com/sirupsen/logrus"
+	"github.com/rs/zerolog/log"
 
 	"github.com/sumnerevans/sublime-music-next/adapters/base"
 )
@@ -18,7 +18,7 @@ type CacheMiddleware struct {
 func NewCacheMiddleware(dataDir string, groundTruthAdapter *base.Adapter) *CacheMiddleware {
 	db, err := sql.Open("sqlite3", dataDir+"/cache.db")
 	if err != nil {
-		log.Fatal("Could not open cache database.")
+		log.Fatal().Msg("Could not open cache database.")
 	}
 
 	return &CacheMiddleware{
@@ -46,7 +46,7 @@ func (cm *CacheMiddleware) GetPlaylists() ([]*base.Playlist, error) {
 	playlists, err := (*cm.GroundTruthAdapter).GetPlaylists()
 
 	for _, playlist := range playlists {
-		log.Info(playlist)
+		log.Info().Interface("playlist", playlist).Msg("playlist")
 	}
 
 	return playlists, err
