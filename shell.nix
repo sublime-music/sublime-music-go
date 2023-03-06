@@ -65,6 +65,7 @@ mkShell {
       gopls
       gotools
       initGitPkg
+      pre-commit
       yq-go
     ];
 
